@@ -6,7 +6,7 @@ const contactsPath = path.resolve('./db/contacts.json');
 function listContacts() {
   fs.readFile(contactsPath, 'utf-8', (error, data) => {
     if (error) {
-      return console.log(error.message);
+      return console.log(error);
     }
 
     const contacts = JSON.parse(data);
@@ -18,7 +18,7 @@ function listContacts() {
 function getContactById(contactId) {
   fs.readFile(contactsPath, 'utf-8', (error, data) => {
     if (error) {
-      return console.log(error.message);
+      return console.log(error);
     }
     const contacts = JSON.parse(data);
     const contact = contacts.find(contact => {
@@ -37,7 +37,7 @@ function getContactById(contactId) {
 function removeContact(contactId) {
   fs.readFile(contactsPath, 'utf-8', (error, data) => {
     if (error) {
-      return console.log(error.message);
+      return console.log(error);
     }
     const contacts = JSON.parse(data);
     const newContacts = contacts.filter(contact => contact.id !== contactId);
@@ -52,7 +52,7 @@ function removeContact(contactId) {
     console.table(newContacts);
     fs.writeFile(contactsPath, JSON.stringify(newContacts), error => {
       if (error) {
-        return console.log(error.message);
+        return console.log(error);
       }
     });
   });
@@ -61,7 +61,7 @@ function removeContact(contactId) {
 function addContact(name, email, phone) {
   fs.readFile(contactsPath, 'utf-8', (error, data) => {
     if (error) {
-      return console.log(error.message);
+      return console.log(error);
     }
     const contacts = JSON.parse(data);
     contacts.push({
@@ -74,7 +74,7 @@ function addContact(name, email, phone) {
     console.table(contacts);
     fs.writeFile(contactsPath, JSON.stringify(contacts), error => {
       if (error) {
-        return console.log(error.message);
+        return console.log(error);
       }
     });
   });
