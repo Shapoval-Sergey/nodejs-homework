@@ -25,7 +25,3 @@ function invokeAction({ action, id, name, email, phone }) {
 }
 
 invokeAction(argv);
-// https://prnt.sc/vfqyxt - node index.js --action="list"
-// https://prnt.sc/vfqzz9 - node index.js --action="get" --id=5
-// https://prnt.sc/vfr0uh - node index.js --action="add" --name="Mango" --email="mango@gmail.com" --phone="322-22-22"
-// https://prnt.sc/vfr1on - node index.js --action="remove" --id=3
