@@ -6,46 +6,43 @@ const contactsPath = path.resolve('../db/contacts.json');
 
 class ContactsRepository {
   listContacts() {
-    fs.readFile(contactsPath, 'utf-8', (error, data) => {
+    fs.readFile(contactsPath, 'utf-8', async (error, data) => {
       if (error) {
         return console.log(error);
       }
 
-      const contacts = JSON.parse(data);
-      console.log('Lists contacts:');
-      console.table(contacts);
+      const contacts = await JSON.parse(data);
+      return contacts;
     });
   }
 
-  getContactById({ contactId }) {
+  getContactById({ id }) {
     fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
       const contacts = JSON.parse(data);
       const contact = contacts.find(contact => {
-        if (contact.id === contactId) {
-          console.log(`Get contact by ID ${contactId}:`);
-          console.table(contact);
+        if (contact.id === id) {
           return contact;
         }
       });
       if (!contact) {
-        console.log(`Contact with such ID ${contactId} does not exist`);
+        console.log(`Contact with such ID ${id} does not exist`);
       }
     });
   }
 
-  removeContact({ contactId }) {
+  removeContact({ id }) {
     fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
       const contacts = JSON.parse(data);
-      const newContacts = contacts.filter(contact => contact.id !== contactId);
+      const newContacts = contacts.filter(contact => contact.id !== id);
 
       if (newContacts.length === contacts.length) {
-        console.log(`This ${contactId} not found`);
+        console.log(`This ${id} not found`);
         return;
       }
       console.log(
@@ -59,17 +56,16 @@ class ContactsRepository {
       });
     });
   }
-  addContact(name, email, phone) {
+  addContact(body) {
     fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
       const contacts = JSON.parse(data);
+      const id = uuid();
       contacts.push({
-        id: uuid(),
-        name,
-        email,
-        phone,
+        id,
+        ...body,
       });
 
       console.log('Contact added successfully !!! New contact list:');
@@ -81,12 +77,12 @@ class ContactsRepository {
       });
     });
   }
-  updateContact(contactId, name, email, phone) {
+  updateContact(id, body) {
     const contact = contacts.find(contact => {
-      if (contact.id === contactId) {
-        contact.name = name;
-        contact.email = email;
-        contact.phone = phone;
+      if (contact.id === id) {
+        contact = {
+          ...body,
+        };
         console.log(`Contact with ID ${contactId} updated!`);
         console.table(contacts);
         return contact;
