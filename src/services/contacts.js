@@ -20,17 +20,12 @@ class ContactsService {
     const data = this.repositories.contacts.removeContact(id);
     return data;
   }
-  addContact(name, email, phone) {
-    const data = this.repositories.contacts.addContact(name, email, phone);
+  addContact(body) {
+    const data = this.repositories.contacts.addContact(body);
     return data;
   }
-  updateContact(contactId, name, email, phone) {
-    const data = this.repositories.contacts.updateContact(
-      contactId,
-      name,
-      email,
-      phone,
-    );
+  updateContact({ id }, body) {
+    const data = this.repositories.contacts.updateContact(id, body);
     return data;
   }
 }

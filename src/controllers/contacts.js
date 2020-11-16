@@ -1,5 +1,5 @@
 const { HttpCode } = require('../helpers/constants');
-const { ContactsService } = require('../services');
+const ContactsService = require('../services/contacts');
 
 const contactsService = new ContactsService();
 
@@ -17,6 +17,7 @@ const listContacts = (req, res, next) => {
     next(error);
   }
 };
+
 const getContactById = (req, res, next) => {
   try {
     const contact = contactsService.getContactById(req.params);
@@ -39,6 +40,7 @@ const getContactById = (req, res, next) => {
     next(error);
   }
 };
+
 const removeContact = (req, res, next) => {
   try {
     const contact = contactsService.removeContact(req.params);
@@ -61,9 +63,10 @@ const removeContact = (req, res, next) => {
     next(error);
   }
 };
+
 const addContact = (req, res, next) => {
   try {
-    const contact = contactsService.addContact(name, email, phone);
+    const contact = contactsService.addContact(req.body);
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
