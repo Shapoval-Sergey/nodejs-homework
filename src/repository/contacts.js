@@ -1,4 +1,4 @@
-const uuid = require('uuid');
+const { v4: uuid } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 
@@ -6,18 +6,18 @@ const contactsPath = path.resolve('../db/contacts.json');
 
 class ContactsRepository {
   listContacts() {
-    fs.readFile(contactsPath, 'utf-8', async (error, data) => {
+    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
 
-      const contacts = await JSON.parse(data);
+      const contacts = JSON.parse(data);
       return contacts;
     });
   }
 
   getContactById({ id }) {
-    fs.readFile(contactsPath, 'utf-8', (error, data) => {
+    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
@@ -34,7 +34,7 @@ class ContactsRepository {
   }
 
   removeContact({ id }) {
-    fs.readFile(contactsPath, 'utf-8', (error, data) => {
+    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
@@ -56,8 +56,9 @@ class ContactsRepository {
       });
     });
   }
+
   addContact(body) {
-    fs.readFile(contactsPath, 'utf-8', (error, data) => {
+    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
@@ -77,6 +78,7 @@ class ContactsRepository {
       });
     });
   }
+
   updateContact(id, body) {
     const contact = contacts.find(contact => {
       if (contact.id === id) {
