@@ -1,4 +1,4 @@
-const { ContactsRepository } = require('../repository');
+const ContactsRepository = require('../repository/contacts-repo');
 
 class ContactsService {
   constructor() {

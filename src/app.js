@@ -3,7 +3,7 @@ const cors = require('cors');
 const logger = require('morgan');
 const app = express();
 const { HttpCode } = require('./helpers/constants');
-const routerContacts = require('./api/contacts');
+const routerContacts = require('./routers/contacts.routers');
 
 const isDev = process.env.NODE_ENV === 'development';
 if (isDev) app.use(logger('dev'));
@@ -12,13 +12,13 @@ app.use(cors('*'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/contacts', routerContacts);
+app.use('/contacts', routerContacts);
 
 app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({
     status: 'error',
     code: HttpCode.NOT_FOUND,
-    message: `Use api on routes ${req.baseUrl}/api/contacts`,
+    message: `Use api on routes ${req.baseUrl}/contacts`,
     data: 'Not Found',
   });
 });

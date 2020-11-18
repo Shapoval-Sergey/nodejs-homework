@@ -1,5 +1,5 @@
 const { HttpCode } = require('../helpers/constants');
-const ContactsService = require('../services/contacts');
+const ContactsService = require('../services/contacts-service');
 
 const contactsService = new ContactsService();
 
