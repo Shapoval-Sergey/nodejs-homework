@@ -6,7 +6,7 @@ const contactsPath = path.resolve('./db/contacts.json');
 
 class ContactsRepository {
   listContacts() {
-    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
+    fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
@@ -17,7 +17,7 @@ class ContactsRepository {
   }
 
   getContactById({ id }) {
-    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
+    fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
@@ -34,7 +34,7 @@ class ContactsRepository {
   }
 
   removeContact({ id }) {
-    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
+    fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
@@ -58,7 +58,7 @@ class ContactsRepository {
   }
 
   addContact(body) {
-    fs.readFileSync(contactsPath, 'utf-8', (error, data) => {
+    fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }

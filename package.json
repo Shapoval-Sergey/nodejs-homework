@@ -2,7 +2,7 @@
   "name": "nodejs-homework",
   "version": "1.0.0",
   "description": "1. node index.js --action=\"list\" [action-list](https://prnt.sc/vfqyxt).",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
