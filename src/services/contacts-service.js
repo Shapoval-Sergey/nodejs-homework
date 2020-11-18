@@ -11,21 +11,27 @@ class ContactsService {
     const data = this.repositories.contacts.listContacts();
     return data;
   }
-  getContactById({ id }) {
-    const data = this.repositories.contacts.getContactById(id);
+  getContactById(contactId) {
+    const data = this.repositories.contacts.getContactById(contactId);
     return data;
   }
 
-  removeContact({ id }) {
-    const data = this.repositories.contacts.removeContact(id);
+  removeContact(contactId) {
+    const data = this.repositories.contacts.removeContact(contactId);
     return data;
   }
-  addContact(body) {
-    const data = this.repositories.contacts.addContact(body);
+  addContact(name, email, phone) {
+    const data = this.repositories.contacts.addContact(name, email, phone);
+    console.log(data);
     return data;
   }
-  updateContact({ id }, body) {
-    const data = this.repositories.contacts.updateContact(id, body);
+  updateContact(contactId, name, email, phone) {
+    const data = this.repositories.contacts.updateContact(
+      contactId,
+      name,
+      email,
+      phone,
+    );
     return data;
   }
 }

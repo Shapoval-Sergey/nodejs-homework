@@ -3,6 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 const contactsPath = path.resolve('./db/contacts.json');
+let contacts;
+let contact;
+let newContacts;
 
 class ContactsRepository {
   listContacts() {
@@ -11,82 +14,92 @@ class ContactsRepository {
         return console.log(error);
       }
 
-      const contacts = JSON.parse(data);
+      contacts = JSON.parse(data);
       return contacts;
     });
+    return contacts;
   }
 
-  getContactById({ id }) {
+  getContactById({ contactId }) {
     fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
       const contacts = JSON.parse(data);
-      const contact = contacts.find(contact => {
-        if (contact.id === id) {
+
+      contact = contacts.find(contact => {
+        if (contact.id === contactId) {
           return contact;
         }
+        return contact;
       });
       if (!contact) {
-        console.log(`Contact with such ID ${id} does not exist`);
+        console.log(`Contact with such ID ${contactId} does not exist`);
       }
+
+      return contact;
     });
+    return contact;
   }
 
-  removeContact({ id }) {
+  removeContact({ contactId }) {
     fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
+
       const contacts = JSON.parse(data);
-      const newContacts = contacts.filter(contact => contact.id !== id);
+      newContacts = contacts.filter(
+        contact => contact.id !== Number(contactId),
+      );
 
       if (newContacts.length === contacts.length) {
-        console.log(`This ${id} not found`);
+        console.log(`This ID:${contactId} not found`);
         return;
       }
-      console.log(
-        `Removal was successful !!! Removed contact with ID ${contactId}`,
-      );
-      console.table(newContacts);
+
       fs.writeFile(contactsPath, JSON.stringify(newContacts), error => {
         if (error) {
           return console.log(error);
         }
       });
+      return newContacts;
     });
+
+    return newContacts;
   }
 
-  addContact(body) {
+  addContact({ name, email, phone }) {
     fs.readFile(contactsPath, 'utf-8', (error, data) => {
       if (error) {
         return console.log(error);
       }
       const contacts = JSON.parse(data);
+
       const id = uuid();
       contacts.push({
         id,
-        ...body,
+        name,
+        email,
+        phone,
       });
 
-      console.log('Contact added successfully !!! New contact list:');
-      console.table(contacts);
       fs.writeFile(contactsPath, JSON.stringify(contacts), error => {
         if (error) {
           return console.log(error);
         }
       });
+      return contacts;
     });
   }
 
-  updateContact(id, body) {
+  updateContact({ contactId, name, email, phone }) {
     const contact = contacts.find(contact => {
-      if (contact.id === id) {
-        contact = {
-          ...body,
-        };
-        console.log(`Contact with ID ${contactId} updated!`);
-        console.table(contacts);
+      if (contact.id === contactId) {
+        contact.name = name;
+        contact.email = email;
+        contact.phone = phone;
+
         return contact;
       }
     });
