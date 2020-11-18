@@ -65,8 +65,10 @@ const removeContact = (req, res, next) => {
 };
 
 const addContact = (req, res, next) => {
+  const { name, email, phone } = req.body;
   try {
-    const contact = contactsService.addContact(req.body);
+    const contact = contactsService.addContact(name, email, phone);
+    console.log(contact);
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
@@ -79,8 +81,14 @@ const addContact = (req, res, next) => {
   }
 };
 const updateContact = (req, res, next) => {
+  const { contactId, name, email, phone } = req.body;
   try {
-    const contact = contactsService.updateContact(req.params, req.body);
+    const contact = contactsService.updateContact(
+      contactId,
+      name,
+      email,
+      phone,
+    );
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',
