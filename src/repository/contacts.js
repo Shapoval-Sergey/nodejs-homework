@@ -2,7 +2,7 @@ const { v4: uuid } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 
-const contactsPath = path.resolve('../db/contacts.json');
+const contactsPath = path.resolve('./db/contacts.json');
 
 class ContactsRepository {
   listContacts() {
