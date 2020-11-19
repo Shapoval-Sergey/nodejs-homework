@@ -9,29 +9,28 @@ class ContactsService {
 
   listContacts() {
     const data = this.repositories.contacts.listContacts();
+
     return data;
   }
+
   getContactById(contactId) {
     const data = this.repositories.contacts.getContactById(contactId);
+
     return data;
   }
 
   removeContact(contactId) {
     const data = this.repositories.contacts.removeContact(contactId);
+
     return data;
   }
-  addContact(name, email, phone) {
-    const data = this.repositories.contacts.addContact(name, email, phone);
-    console.log(data);
+  addContact(body) {
+    const data = this.repositories.contacts.addContact(body);
+
     return data;
   }
-  updateContact(contactId, name, email, phone) {
-    const data = this.repositories.contacts.updateContact(
-      contactId,
-      name,
-      email,
-      phone,
-    );
+  updateContact({ contactId }, body) {
+    const data = this.repositories.contacts.updateContact(contactId, body);
     return data;
   }
 }

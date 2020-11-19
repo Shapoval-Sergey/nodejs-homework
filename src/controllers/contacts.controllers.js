@@ -21,6 +21,7 @@ const listContacts = (req, res, next) => {
 const getContactById = (req, res, next) => {
   try {
     const contact = contactsService.getContactById(req.params);
+    console.log(contact);
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',
@@ -44,6 +45,7 @@ const getContactById = (req, res, next) => {
 const removeContact = (req, res, next) => {
   try {
     const contact = contactsService.removeContact(req.params);
+    console.log(contact);
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',
@@ -65,10 +67,9 @@ const removeContact = (req, res, next) => {
 };
 
 const addContact = (req, res, next) => {
-  const { name, email, phone } = req.body;
   try {
-    const contact = contactsService.addContact(name, email, phone);
-    console.log(contact);
+    const contact = contactsService.addContact(req.body);
+
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
@@ -81,10 +82,11 @@ const addContact = (req, res, next) => {
   }
 };
 const updateContact = (req, res, next) => {
-  const { contactId, name, email, phone } = req.body;
+  console.log(req.params);
+  const { name, email, phone } = req.body;
   try {
     const contact = contactsService.updateContact(
-      contactId,
+      req.params,
       name,
       email,
       phone,
