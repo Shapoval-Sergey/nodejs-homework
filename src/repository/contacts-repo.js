@@ -12,17 +12,10 @@ class ContactsRepository {
   }
 
   getContactById(contactId) {
-    const foundContact = contacts.find(contact => {
-      if (contact.id === contactId) {
-        return contact;
-      }
-      return contact;
-    });
-
+    const foundContact = contacts.find(contact => contact.id === contactId);
     if (!foundContact) {
       return;
     }
-
     return foundContact;
   }
 
