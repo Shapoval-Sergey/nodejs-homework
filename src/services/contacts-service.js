@@ -1,14 +1,10 @@
 const ContactsRepository = require('../repository/contacts-repo');
-const db = require('../db');
 
 class ContactsService {
   constructor() {
-    process.nextTick(async () => {
-      const client = await db;
-      this.repositories = {
-        contacts: new ContactsRepository(),
-      };
-    });
+    this.repositories = {
+      contacts: new ContactsRepository(),
+    };
   }
 
   async listContacts() {
@@ -17,13 +13,13 @@ class ContactsService {
     return data;
   }
 
-  async getContactById(contactId) {
+  async getContactById({ contactId }) {
     const data = await this.repositories.contacts.getContactById(contactId);
 
     return data;
   }
 
-  async removeContact(contactId) {
+  async removeContact({ contactId }) {
     const data = await this.repositories.contacts.removeContact(contactId);
 
     return data;
