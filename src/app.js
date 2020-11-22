@@ -1,9 +1,20 @@
+// mongodb+srv://sergey:SjQZMFIR57BYquRj@cluster0.4s8vj.mongodb.net/<dbname>?retryWrites=true&w=majority
+
 const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
 const app = express();
 const { HttpCode } = require('./helpers/constants');
 const routerContacts = require('./routers/contacts.routers');
+const mongoose = require('mongoose');
+
+// async function main() {
+//   await mongoose.connect(
+//     'mongodb+srv://sergey:SjQZMFIR57BYquRj@cluster0.4s8vj.mongodb.net/<dbname>?retryWrites=true&w=majority',
+//   );
+// }
+
+// main();
 
 const isDev = process.env.NODE_ENV === 'development';
 if (isDev) app.use(logger('dev'));
@@ -32,8 +43,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-const Port = process.env.PORT || 3000;
-
-app.listen(Port, () => {
-  console.log(`Server running. Use our API on port: ${Port}`);
-});
+module.exports = app;

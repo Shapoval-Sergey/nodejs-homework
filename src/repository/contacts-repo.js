@@ -1,82 +1,61 @@
-const { v4: uuid } = require('uuid');
-const fs = require('fs');
-const path = require('path');
-
-const contactsPath = path.resolve('./db/contacts.json');
-const contactList = fs.readFileSync(contactsPath, 'utf-8');
-const contacts = JSON.parse(contactList);
+const { ObjectID } = require('mongodb');
+const { HttpCode } = require('../helpers/constants');
+const { ErrorHandler } = require('../helpers/errorHandler');
 
 class ContactsRepository {
-  listContacts() {
-    return contacts;
+  constructor(client) {
+    this.collection = client.db().collection('contacts');
   }
 
-  getContactById(contactId) {
-    const foundContact = contacts.find(contact => contact.id === contactId);
-    if (!foundContact) {
-      return;
+  #getMongoId(contactId) {
+    try {
+      return ObjectID(contactId);
+    } catch (e) {
+      throw new ErrorHandler(
+        HttpCode.BAD_REQUEST,
+        `MongoDB _id ${e.message}`,
+        'Bad Request',
+      );
     }
-    return foundContact;
   }
 
-  removeContact(contactId) {
-    const newContacts = contacts.filter(contact => contact.id !== contactId);
-
-    if (newContacts.length === contacts.length) {
-      return contacts;
-    }
-
-    fs.writeFile(contactsPath, JSON.stringify(newContacts), error => {
-      if (error) {
-        return console.log('error :', error);
-      }
-    });
-
-    return newContacts;
+  async listContacts() {
+    const results = await this.collection.find({}).toArray();
+    return results;
   }
 
-  addContact({ name, email, phone }) {
-    const id = uuid();
-    contacts.push({
-      id,
-      name: name,
-      email: email,
-      phone: phone,
-    });
-
-    fs.writeFile(contactsPath, JSON.stringify(contacts), error => {
-      if (error) {
-        return console.log(error);
-      }
-    });
-
-    return contacts;
+  async getContactById(contactId) {
+    const objId = this.#getMongoId(contactId);
+    const [result] = await this.collection.find({ _id: objId }).toArray();
+    return result;
   }
 
-  updateContact(contactId, name, email, phone) {
-    const contact = contacts.find(contact => {
-      if (contact.id === contactId) {
-        contact.name = name;
-        contact.email = email;
-        contact.phone = phone;
-
-        return contact;
-      }
+  async removeContact(contactId) {
+    const objId = this.#getMongoId(contactId);
+    const { value: result } = await this.collection.findOneAndDelete({
+      _id: objId,
     });
+    return result;
+  }
 
-    if (contact === null) {
-      return;
-    }
+  async addContact(body) {
+    const {
+      ops: [result],
+    } = await this.collection.insertOne(body);
+    return result;
+  }
 
-    fs.writeFile(contactsPath, JSON.stringify(contacts), error => {
-      if (error) {
-        return console.log(error);
-      }
-    });
-
-    return contacts;
+  async updateContact(contactId, body) {
+    const objId = this.#getMongoId(contactId);
+    const { value: result } = await this.collection.findOneAndUpdate(
+      {
+        _id: objId,
+      },
+      { $set: body },
+      { returnOriginal: false },
+    );
+    return result;
   }
 }
 
 module.exports = ContactsRepository;
- 
