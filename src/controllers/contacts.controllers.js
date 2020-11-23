@@ -21,7 +21,7 @@ const listContacts = async (req, res, next) => {
 const getContactById = async (req, res, next) => {
   try {
     const contact = await contactsService.getContactById(req.params);
-    console.log(contact);
+
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',
@@ -45,7 +45,7 @@ const getContactById = async (req, res, next) => {
 const removeContact = async (req, res, next) => {
   try {
     const contact = await contactsService.removeContact(req.params);
-    console.log(contact);
+
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',
@@ -82,15 +82,8 @@ const addContact = async (req, res, next) => {
   }
 };
 const updateContact = async (req, res, next) => {
-  console.log(req.params);
-  const { name, email, phone } = req.body;
   try {
-    const contact = await contactsService.updateContact(
-      req.params,
-      name,
-      email,
-      phone,
-    );
+    const contact = await contactsService.updateContact(req.params, req.body);
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',

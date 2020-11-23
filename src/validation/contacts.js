@@ -3,13 +3,19 @@ const { HttpCode } = require('../helpers/constants');
 
 const schemaCreateContact = Joi.object({
   name: Joi.string().alphanum().min(2).max(30).required(),
-  email: Joi.string().alphanum().min(5).max(45).required(),
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ['com', 'net'] },
+  }),
   phone: Joi.string().alphanum().min(4).max(30).required(),
 });
 
 const schemaUpdateContact = Joi.object({
   name: Joi.string().alphanum().min(2).max(30).optional(),
-  email: Joi.string().alphanum().min(5).max(45).optional(),
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ['com', 'net'] },
+  }),
   phone: Joi.string().alphanum().min(4).max(30).optional(),
 });
 
