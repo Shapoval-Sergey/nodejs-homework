@@ -1,15 +1,42 @@
 const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 const app = express();
 const { HttpCode } = require('./helpers/constants');
 const routerContacts = require('./routers/contacts.routers');
+require('dotenv').config();
+
+mongoose.Promise = global.Promise;
 
 const isDev = process.env.NODE_ENV === 'development';
 if (isDev) app.use(logger('dev'));
 
+mongoose.connect(process.env.DB_HOST, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
+
 app.use(cors('*'));
 app.use(express.json());
+
+app.use(
+  session({
+    secret: 'secret-word',
+    key: 'session-key',
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      maxAge: null,
+    },
+    saveUninitialized: false,
+    resave: false,
+  }),
+);
+require('./config/config-passport');
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/contacts', routerContacts);
 
