@@ -15,6 +15,7 @@ const contactSchema = new Schema(
       type: String,
       required: [true, 'Phone user is required'],
     },
+    owner: { type: mongoose.SchemaTypes.ObjectId, ref: 'user' },
   },
   { versionKey: false, timestamps: true },
 );
