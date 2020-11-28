@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bCrypt = require('bcryptjs');
+const SALT_FACTOR = 6;
+const { Subscr } = require('../helpers/constants');
 
 const Schema = mongoose.Schema;
 
@@ -14,6 +16,10 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'Email required'],
     unique: true,
+    validate(value) {
+      const re = /\S+@\S+\.\S+/;
+      return re.test(String(value).toLowerCase());
+    },
   },
   password: {
     type: String,
@@ -21,18 +27,33 @@ const userSchema = new Schema({
   },
   subscription: {
     type: String,
-    enum: ['free', 'pro', 'premium'],
+    enum: [Subscr.FREE, Subscr.PRO, Subscr.PREMIUM],
     default: 'free',
   },
-  token: String,
+  token: {
+    type: String,
+    default: null,
+  },
 });
 
-userSchema.methods.setPassword = function (password) {
-  this.password = bCrypt.hashSync(password, bCrypt.genSaltSync(6));
-};
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password')) return next();
+  this.password = await bCrypt.hash(
+    this.password,
+    bCrypt.genSaltSync(SALT_FACTOR),
+  );
+  next();
+});
 
-userSchema.methods.validPassword = function (password) {
-  return bCrypt.compareSync(password, this.password);
+// userSchema.methods.setPassword = async function (password) {
+//   this.password = await bCrypt.hashSync(
+//     password,
+//     bCrypt.genSaltSync(SALT_FACTOR),
+//   );
+// };
+
+userSchema.methods.validPassword = async function (password) {
+  return await bCrypt.compareSync(password, this.password);
 };
 
 const User = mongoose.model('user', userSchema);
