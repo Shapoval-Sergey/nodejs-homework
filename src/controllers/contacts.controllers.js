@@ -5,12 +5,12 @@ const contactsService = new ContactsService();
 
 const listContacts = async (req, res, next) => {
   try {
-    const contacts = await contactsService.listContacts();
+    const contacts = await contactsService.listContacts(req.query);
     res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        contacts,
+        ...contacts,
       },
     });
   } catch (error) {
