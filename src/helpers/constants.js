@@ -11,9 +11,9 @@ const HttpCode = {
 };
 
 const Subscr = {
-  FREE: 'f',
-  PRO: 'p',
-  PREMIUM: 'pr',
+  FREE: 'free',
+  PRO: 'pro',
+  PREMIUM: 'premium',
 };
 
 module.exports = {

@@ -68,8 +68,8 @@ const removeContact = async (req, res, next) => {
 
 const addContact = async (req, res, next) => {
   try {
-    const contact = await contactsService.addContact(req.body);
-
+    const userId = req.user.id;
+    const contact = await contactsService.addContact(req.body, userId);
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
