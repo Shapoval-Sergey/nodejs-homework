@@ -1,14 +1,15 @@
 const Contact = require('../schemas/contacts');
+const { Subscr } = require('../helpers/constants');
 
 class ContactsRepository {
   constructor() {
     this.model = Contact;
   }
 
-  async listContacts({ page = 1, limit = 20 }) {
+  async listContacts({ page = 1, limit = 20, sub = 'subscription' }) {
     const { docs: contacts, totalDocs: total } = await this.model.paginate(
       {},
-      { page, limit },
+      { page, limit, select: { sub } },
     );
     return { contacts, total, page, limit };
   }
