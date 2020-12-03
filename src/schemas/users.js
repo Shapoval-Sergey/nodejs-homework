@@ -33,6 +33,16 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    avatarURL: {
+      email: String,
+      password: String,
+      avatarURL: String,
+      subscription: {
+        type: String,
+        enum: ['free', 'pro', 'premium'],
+        default: 'free',
+      },
+    },
   },
   { versionKey: false, timestamps: true },
 );
