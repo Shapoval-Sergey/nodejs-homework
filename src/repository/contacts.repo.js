@@ -5,11 +5,10 @@ class ContactsRepository {
   constructor() {
     this.model = Contact;
   }
-
-  async listContacts({ page = 1, limit = 20, sub = 'subscription' }) {
+  async listContacts({ page = 1, limit = 20 }) {
     const { docs: contacts, totalDocs: total } = await this.model.paginate(
       {},
-      { page, limit, select: { sub } },
+      { page, limit },
     );
     return { contacts, total, page, limit };
   }
