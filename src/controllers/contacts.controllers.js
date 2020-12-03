@@ -1,16 +1,16 @@
 const { HttpCode } = require('../helpers/constants');
-const ContactsService = require('../services/contacts-service');
+const ContactsService = require('../services/contacts.service');
 
 const contactsService = new ContactsService();
 
 const listContacts = async (req, res, next) => {
   try {
-    const contacts = await contactsService.listContacts();
+    const contacts = await contactsService.listContacts(req.query);
     res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        contacts,
+        ...contacts,
       },
     });
   } catch (error) {
@@ -68,8 +68,8 @@ const removeContact = async (req, res, next) => {
 
 const addContact = async (req, res, next) => {
   try {
-    const contact = await contactsService.addContact(req.body);
-
+    const userId = req.user.id;
+    const contact = await contactsService.addContact(req.body, userId);
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,

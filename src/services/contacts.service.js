@@ -1,4 +1,4 @@
-const ContactsRepository = require('../repository/contacts-repo');
+const ContactsRepository = require('../repository/contacts.repo');
 
 class ContactsService {
   constructor() {
@@ -7,8 +7,8 @@ class ContactsService {
     };
   }
 
-  async listContacts() {
-    const data = await this.repositories.contacts.listContacts();
+  async listContacts(query) {
+    const data = await this.repositories.contacts.listContacts(query);
 
     return data;
   }
@@ -24,8 +24,8 @@ class ContactsService {
 
     return data;
   }
-  async addContact(body) {
-    const data = await this.repositories.contacts.addContact(body);
+  async addContact(body, userId) {
+    const data = await this.repositories.contacts.addContact(body, userId);
 
     return data;
   }

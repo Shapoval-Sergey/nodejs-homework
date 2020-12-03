@@ -1,13 +1,17 @@
 const Contact = require('../schemas/contacts');
+const { Subscr } = require('../helpers/constants');
 
 class ContactsRepository {
   constructor() {
     this.model = Contact;
   }
 
-  async listContacts() {
-    const results = await this.model.find({});
-    return results;
+  async listContacts({ page = 1, limit = 20, sub = 'subscription' }) {
+    const { docs: contacts, totalDocs: total } = await this.model.paginate(
+      {},
+      { page, limit, select: { sub } },
+    );
+    return { contacts, total, page, limit };
   }
 
   async getContactById(contactId) {
@@ -20,8 +24,8 @@ class ContactsRepository {
     return result;
   }
 
-  async addContact(body) {
-    const result = await this.model.create(body);
+  async addContact(body, userId) {
+    const result = await this.model.create({ ...body, owner: userId });
     return result;
   }
 

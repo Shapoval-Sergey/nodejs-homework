@@ -5,12 +5,18 @@ const {
   validateCreateContact,
   validateUpdateContact,
 } = require('../validation/contacts');
+const guard = require('../helpers/guard');
 
 router
-  .get('/', controllerContacts.listContacts)
-  .get('/:contactId', controllerContacts.getContactById)
-  .post('/', validateCreateContact, controllerContacts.addContact)
-  .delete('/:contactId', controllerContacts.removeContact)
-  .put('/:contactId', validateUpdateContact, controllerContacts.updateContact);
+  .get('/', guard, controllerContacts.listContacts)
+  .get('/:contactId', guard, controllerContacts.getContactById)
+  .post('/', guard, validateCreateContact, controllerContacts.addContact)
+  .delete('/:contactId', guard, controllerContacts.removeContact)
+  .put(
+    '/:contactId',
+    guard,
+    validateUpdateContact,
+    controllerContacts.updateContact,
+  );
 
 module.exports = router;

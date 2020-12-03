@@ -1,17 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const logger = require('morgan');
 const app = express();
 const { HttpCode } = require('./helpers/constants');
-const routerContacts = require('./routers/contacts.routers');
 
-const isDev = process.env.NODE_ENV === 'development';
-if (isDev) app.use(logger('dev'));
+const routerUsers = require('./routers/users.routers');
+const routerContacts = require('./routers/contacts.routers');
 
 app.use(cors('*'));
 app.use(express.json());
 
 app.use('/contacts', routerContacts);
+app.use('/users', routerUsers);
 
 app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({
