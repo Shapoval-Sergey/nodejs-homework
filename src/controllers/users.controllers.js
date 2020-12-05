@@ -29,12 +29,14 @@ const reg = async (req, res, next) => {
         id: newUser.id,
         email: newUser.email,
         subscription: newUser.subscription,
+        avatar: newUser.avatar,
       },
     });
   } catch (e) {
     next(e);
   }
 };
+
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -57,6 +59,7 @@ const login = async (req, res, next) => {
     next(e);
   }
 };
+
 const logout = async (req, res, next) => {
   const id = req.user.id;
   await serviceAuth.logout(id);
@@ -66,8 +69,20 @@ const logout = async (req, res, next) => {
   });
 };
 
+const avatars = async (req, res, next) => {
+  const id = req.user.id;
+  const pathFile = req.file.path;
+  const url = await serviceUser.updateAvatar(id, pathFile);
+  return res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    avatarUrl: url,
+  });
+};
+
 module.exports = {
   reg,
   login,
   logout,
+  avatars,
 };

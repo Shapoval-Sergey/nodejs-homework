@@ -1,41 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const fs = require('fs').promises;
-require('dotenv').config();
+
 const app = express();
-const multer = require('multer');
+
 const { HttpCode } = require('./helpers/constants');
 const routerUsers = require('./routers/users.routers');
 const routerContacts = require('./routers/contacts.routers');
-
-const UPLOAD_DIR = path.join(__dirname, process.env.UPLOAD_DIR);
-const IMG_DIR = path.join(__dirname, 'public', 'images');
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, UPLOAD_DIR);
-  },
-  filename: function (req, file, cb) {
-    // cb(null, file.fieldname + '-' + Date.now());
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 2000000 },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.includes('image')) {
-      cb(null, true);
-      return;
-    }
-
-    cb(null, false);
-  },
-});
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors('*'));
 app.use(express.json());
