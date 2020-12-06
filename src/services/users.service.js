@@ -32,21 +32,25 @@ class UserService {
   }
 
   async updateAvatar(id, pathFile) {
-    const {
-      secure_url: avatar,
-      public_id: idCloudAvatar,
-    } = await this.#uploadCloud(pathFile);
-    const oldAvatar = await this.repositories.users.getAvatar(id);
-    this.cloudinary.uploader.destroy(
-      oldAvatar,
-      idCloudAvatar,
-      (err, result) => {
-        console.log(err, result);
-      },
-    );
-    await this.repositories.users.updateAvatar(id, avatar, idCloudAvatar);
-    await fs.unlink(pathFile);
-    return avatar;
+    try {
+      const {
+        secure_url: avatar,
+        public_id: idCloudAvatar,
+      } = await this.#uploadCloud(pathFile);
+      const oldAvatar = await this.repositories.users.getAvatar(id);
+      this.cloudinary.uploader.destroy(
+        oldAvatar,
+        idCloudAvatar,
+        (err, result) => {
+          console.log(err, result);
+        },
+      );
+      await this.repositories.users.updateAvatar(id, avatar, idCloudAvatar);
+      await fs.unlink(pathFile);
+      return avatar;
+    } catch (error) {
+      throw new Error(null, 'Error upload avatar');
+    }
   }
 
   #uploadCloud = pathFile => {
