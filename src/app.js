@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const { HttpCode } = require('./helpers/constants');
 
+const app = express();
+
+const { HttpCode } = require('./helpers/constants');
 const routerUsers = require('./routers/users.routers');
 const routerContacts = require('./routers/contacts.routers');
 

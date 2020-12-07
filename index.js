@@ -4,7 +4,7 @@ const db = require('./src/db');
 const Port = process.env.PORT || 3000;
 
 db.then(() => {
-  app.listen(Port, () => {
+  app.listen(Port, async () => {
     console.log(`Server running. Use our API on port: ${Port}`);
   });
 }).catch(err => {
