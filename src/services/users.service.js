@@ -31,6 +31,11 @@ class UserService {
     return data;
   }
 
+  async getCurrentUser(id) {
+    const data = await this.repositories.users.getCurrentUser(id);
+    return data;
+  }
+
   async updateAvatar(id, pathFile) {
     try {
       const {

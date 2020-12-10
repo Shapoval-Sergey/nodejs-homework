@@ -32,6 +32,13 @@ class UsersRepository {
     const { avatar, idCloudAvatar } = await this.model.findOne({ _id: id });
     return { avatar, idCloudAvatar };
   }
+
+  async getCurrentUser(id) {
+    const user = await this.model.findOne(
+      { _id: id },
+      '_id username email password avatar createdAt',
+    );
+  }
 }
 
 module.exports = UsersRepository;
