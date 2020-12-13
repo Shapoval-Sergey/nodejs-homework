@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const app = express();
 
@@ -12,6 +14,31 @@ app.use(express.json());
 
 app.use('/contacts', routerContacts);
 app.use('/users', routerUsers);
+
+app.post('/', (req, res, next) => {
+  const config = {
+    host: 'smtp.meta.ua',
+    port: 465,
+    secure: true,
+    auth: {
+      user: 'shapoval_sergey92@meta.ua',
+      pass: process.env.PASSWORD,
+    },
+  };
+
+  const transporter = nodemailer.createTransport(config);
+  const emailOptions = {
+    from: 'shapoval_sergey92@meta.ua',
+    to: 'noresponse@gmail.com',
+    subject: 'Nodemailer test',
+    text: 'Привет. Мы тестируем отправку писем!',
+  };
+
+  transporter
+    .sendMail(emailOptions)
+    .then(info => console.log(info))
+    .catch(err => console.log(err));
+});
 
 app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({

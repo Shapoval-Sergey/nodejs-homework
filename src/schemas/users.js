@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 const bCrypt = require('bcryptjs');
 const SALT_FACTOR = 6;
 const { Subscr } = require('../helpers/constants');
+
 const gravatar = require('gravatar');
 
 const userSchema = new Schema(
@@ -43,6 +44,14 @@ const userSchema = new Schema(
     idCloudAvatar: {
       type: String,
       default: null,
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verifyToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
     },
   },
   { versionKey: false, timestamps: true },

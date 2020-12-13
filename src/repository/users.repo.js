@@ -38,6 +38,7 @@ class UsersRepository {
       { _id: id },
       '_id username email password avatar createdAt',
     );
+    return user;
   }
 }
 
