@@ -15,6 +15,11 @@ class UsersRepository {
     return result;
   }
 
+  async findByField(field) {
+    const result = await this.model.findOne(field);
+    return result;
+  }
+
   async create(body) {
     const user = new this.model(body);
     return user.save();
@@ -31,6 +36,14 @@ class UsersRepository {
   async getAvatar(id) {
     const { avatar, idCloudAvatar } = await this.model.findOne({ _id: id });
     return { avatar, idCloudAvatar };
+  }
+
+  async getCurrentUser(id) {
+    const user = await this.model.findOne(
+      { _id: id },
+      '_id username email password avatar createdAt',
+    );
+    return user;
   }
 }
 
