@@ -14,13 +14,20 @@ class UserService {
       api_key: process.env.API_KEY,
       api_secret: process.env.API_SECRET,
     });
+    this.emailService = new EmailService();
     this.repositories = {
       users: new UsersRepository(),
     };
   }
 
-  async create(body, verifyToken) {
+  async create(body) {
     const verifyToken = nanoid();
+    const { name, email } = body;
+    try {
+      await this.emailService.sendEmail(verifyToken, email, name);
+    } catch (e) {
+      throw new ErrorHandler(503, e.message, 'Service Unavailable');
+    }
     const data = await this.repositories.users.create({ ...body, verifyToken });
     return data;
   }
